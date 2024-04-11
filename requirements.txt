@@ -17,7 +17,3 @@ requests==2.31.0
 twilio==9.0.4
 urllib3==2.2.1
 yarl==1.9.4
-
-
-# pip3 install twilio
-#pip install python-dotenv

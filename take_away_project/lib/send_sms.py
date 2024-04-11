@@ -1,20 +1,25 @@
 from twilio.rest import Client
+from twilio.base.exceptions import TwilioRestException
+import logging
 import os
 
 from dotenv import load_dotenv
 
 
-class Message_sender:
-    def __init__(self,requester):
-        load_dotenv()
-        self.requester = requester
-        self.account_sid = os.environ['TWILIO_ACCOUNT_SID']
-        self.auth_token  = os.environ['TWILIO_AUTH_TOKEN']
-        self.client = Client(self.account_sid, self.auth_token)
+# export TWILIO_ACCOUNT_SID=xxxxxxxxx
+# export TWILIO_AUTH_TOKEN=xxxxxxxxx
 
-    def send_message(self):
-        message = self.client.messages.create(
+
+client = Client()
+
+def send_message(to, from_, message):
+    try:
+        sent_message = client.messages.create(
             to="+4407546854667",
             from_="+447401190288",
-            body="Thank you! Your order was placed and will be delivered before 18:52" )
-        return message.body
+            body="Thank you! Your order was placed and will be delivered before 18:52" 
+        )
+    except TwilioRestException as e:
+        logging.error(f'Oh no: {e}')
+        return
+    return sent_message.sid
